@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: monolith_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: monolith_user
+      POSTGRES_PASSWORD: monolith_password
+      POSTGRES_DB: monolith_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U monolith_user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: monolith_app
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://monolith_user:monolith_password@postgres:5432/monolith_db?schema=public
+      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      JWT_ACCESS_EXPIRATION: 15m
+      JWT_REFRESH_EXPIRATION: 7d
+      NODE_ENV: production
+      PORT: 3000
+      BCRYPT_ROUNDS: 10
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    command: sh -c "npx prisma migrate deploy && npm start"
+
+volumes:
+  postgres_data:

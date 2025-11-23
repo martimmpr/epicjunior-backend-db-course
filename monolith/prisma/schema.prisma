@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SessionType {
+  WORKSHOP
+  TALK
+  PANEL
+  NETWORKING
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  deleted   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  userEvents   UserEvent[]
+  userSessions UserSession[]
+
+  @@index([email])
+  @@index([deleted])
+  @@map("users")
+}
+
+model UserEvent {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  eventId   String   @db.Uuid
+  enrolled  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, eventId])
+  @@index([userId])
+  @@index([eventId])
+  @@map("user_events")
+}
+
+model UserSession {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  sessionId String   @db.Uuid
+  eventId   String   @db.Uuid
+  attended  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, sessionId])
+  @@index([userId])
+  @@index([sessionId])
+  @@index([eventId])
+  @@map("user_sessions")
+}
+
+model Event {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String
+  organization String
+  date         DateTime
+  logo         String?
+  description  String   @db.Text
+  deleted      Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  sessions      Session[]
+  eventSessions EventSession[]
+  userEvents    UserEvent[]
+
+  @@index([date])
+  @@index([deleted])
+  @@map("events")
+}
+
+model EventSession {
+  id        String @id @default(uuid()) @db.Uuid
+  eventId   String @db.Uuid
+  sessionId String @db.Uuid
+  
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  
+  @@unique([eventId, sessionId])
+  @@index([eventId])
+  @@index([sessionId])
+  @@map("event_sessions")
+}
+
+model Session {
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String
+  type      SessionType
+  local     String
+  date      DateTime
+  duration  Int         // minutes
+  time      String      // HH:MM format
+  mandatory Boolean     @default(false)
+  eventId   String      @db.Uuid
+  deleted   Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  
+  event           Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  sessionSpeakers SessionSpeaker[]
+  userSessions    UserSession[]
+
+  @@index([eventId])
+  @@index([type])
+  @@index([deleted])
+  @@map("sessions")
+}
+
+model SessionSpeaker {
+  id        String @id @default(uuid()) @db.Uuid
+  sessionId String @db.Uuid
+  speakerId String @db.Uuid
+  
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  speaker Speaker @relation(fields: [speakerId], references: [id], onDelete: Cascade)
+  
+  @@unique([sessionId, speakerId])
+  @@index([sessionId])
+  @@index([speakerId])
+  @@map("session_speakers")
+}
+
+model Speaker {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  avatar      String?
+  description String   @db.Text
+  deleted     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  sessionSpeakers SessionSpeaker[]
+
+  @@index([deleted])
+  @@map("speakers")
+}
