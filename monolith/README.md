@@ -4,8 +4,25 @@ A traditional single-application backend with all features in one codebase.
 
 ## Architecture Overview
 
-```
-Client → Express App → PostgreSQL Database
+```mermaid
+graph TD
+    Client[Client]
+    App[Express App<br/>:3000]
+    DB[(PostgreSQL DB<br/>:5432)]
+    
+    Auth[Auth Module]
+    Users[Users Module]
+    Events[Events Module]
+    Sessions[Sessions Module]
+    Speakers[Speakers Module]
+    
+    Client -->|HTTP| App
+    App --- Auth
+    App --- Users
+    App --- Events
+    App --- Sessions
+    App --- Speakers
+    App -->|Prisma ORM| DB
 ```
 
 All modules (Auth, Users, Events, Sessions, Speakers) run in the same process and share the same database.
