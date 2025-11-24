@@ -1,9 +1,9 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { logger } from './logger';
 
-const JWT_SECRET: string = process.env.JWT_SECRET || 'user-service-secret';
-const JWT_ACCESS_EXPIRATION: string = process.env.JWT_ACCESS_EXPIRATION || '15m';
-const JWT_REFRESH_EXPIRATION: string = process.env.JWT_REFRESH_EXPIRATION || '7d';
+const JWT_SECRET = process.env.JWT_SECRET || 'microservices-secret';
+const JWT_ACCESS_EXPIRATION = process.env.JWT_ACCESS_EXPIRATION || '15m';
+const JWT_REFRESH_EXPIRATION = process.env.JWT_REFRESH_EXPIRATION || '7d';
 
 export interface TokenPayload {
     userId: string;
