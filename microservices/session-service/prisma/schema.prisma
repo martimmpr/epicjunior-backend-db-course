@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SessionType {
+  WORKSHOP
+  TALK
+  PANEL
+  NETWORKING
+}
+
+model Session {
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String
+  type      SessionType
+  local     String
+  date      DateTime
+  time      String
+  duration  Int
+  mandatory Boolean     @default(false)
+  eventId   String      @db.Uuid
+  deleted   Boolean     @default(false)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  
+  sessionSpeakers SessionSpeaker[]
+
+  @@index([eventId])
+  @@index([type])
+  @@index([deleted])
+  @@map("sessions")
+}
+
+model SessionSpeaker {
+  id        String @id @default(uuid()) @db.Uuid
+  sessionId String @db.Uuid
+  speakerId String @db.Uuid
+  
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  @@unique([sessionId, speakerId])
+  @@index([sessionId])
+  @@index([speakerId])
+  @@map("session_speakers")
+}

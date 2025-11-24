@@ -1,0 +1,228 @@
+version: '3.8'
+
+services:
+  # Message Broker
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: microservices_rabbitmq
+    ports:
+      - "5672:5672"   # AMQP port
+      - "15672:15672" # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # User Service Database
+  user-db:
+    image: postgres:15-alpine
+    container_name: user_service_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: user_service
+      POSTGRES_PASSWORD: user_password
+      POSTGRES_DB: user_db
+    volumes:
+      - user_db_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Event Service Database
+  event-db:
+    image: postgres:15-alpine
+    container_name: event_service_db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: event_service
+      POSTGRES_PASSWORD: event_password
+      POSTGRES_DB: event_db
+    volumes:
+      - event_db_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U event_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Session Service Database
+  session-db:
+    image: postgres:15-alpine
+    container_name: session_service_db
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: session_service
+      POSTGRES_PASSWORD: session_password
+      POSTGRES_DB: session_db
+    volumes:
+      - session_db_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U session_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Speaker Service Database
+  speaker-db:
+    image: postgres:15-alpine
+    container_name: speaker_service_db
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: speaker_service
+      POSTGRES_PASSWORD: speaker_password
+      POSTGRES_DB: speaker_db
+    volumes:
+      - speaker_db_data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U speaker_service"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # User Service
+  user-service:
+    build: ./user-service
+    container_name: user_service
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://user_service:user_password@user-db:5432/user_db?schema=public
+      JWT_SECRET: microservices-super-secret-jwt-key-change-in-production
+      JWT_ACCESS_EXPIRATION: 15m
+      JWT_REFRESH_EXPIRATION: 7d
+      NODE_ENV: production
+      PORT: 3001
+      BCRYPT_ROUNDS: 10
+      RABBITMQ_URL: amqp://admin:admin123@rabbitmq:5672
+      SESSION_SERVICE_GRPC_URL: session-service:50051
+    depends_on:
+      user-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    restart: unless-stopped
+    command: sh -c "npx prisma migrate deploy && npm start"
+
+  # Event Service
+  event-service:
+    build: ./event-service
+    container_name: event_service
+    ports:
+      - "3002:3002"
+    environment:
+      DATABASE_URL: postgresql://event_service:event_password@event-db:5432/event_db?schema=public
+      JWT_SECRET: microservices-super-secret-jwt-key-change-in-production
+      NODE_ENV: production
+      PORT: 3002
+      RABBITMQ_URL: amqp://admin:admin123@rabbitmq:5672
+      SESSION_SERVICE_GRPC_URL: session-service:50051
+      USER_SERVICE_URL: http://user-service:3001
+    depends_on:
+      event-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    restart: unless-stopped
+    command: sh -c "npx prisma migrate deploy && npm start"
+
+  # Session Service
+  session-service:
+    build: ./session-service
+    container_name: session_service
+    ports:
+      - "3003:3003"
+      - "50051:50051" # gRPC port
+    environment:
+      DATABASE_URL: postgresql://session_service:session_password@session-db:5432/session_db?schema=public
+      JWT_SECRET: microservices-super-secret-jwt-key-change-in-production
+      NODE_ENV: production
+      PORT: 3003
+      GRPC_PORT: 50051
+      RABBITMQ_URL: amqp://admin:admin123@rabbitmq:5672
+      SPEAKER_SERVICE_GRPC_URL: speaker-service:50052
+      EVENT_SERVICE_URL: http://event-service:3002
+    depends_on:
+      session-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    restart: unless-stopped
+    command: sh -c "npx prisma migrate deploy && npm start"
+
+  # Speaker Service
+  speaker-service:
+    build: ./speaker-service
+    container_name: speaker_service
+    ports:
+      - "3004:3004"
+      - "50052:50052" # gRPC port
+    environment:
+      DATABASE_URL: postgresql://speaker_service:speaker_password@speaker-db:5432/speaker_db?schema=public
+      JWT_SECRET: microservices-super-secret-jwt-key-change-in-production
+      NODE_ENV: production
+      PORT: 3004
+      GRPC_PORT: 50052
+      RABBITMQ_URL: amqp://admin:admin123@rabbitmq:5672
+    depends_on:
+      speaker-db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - microservices-network
+    restart: unless-stopped
+    command: sh -c "npx prisma migrate deploy && npm start"
+
+  # API Gateway (Nginx)
+  api-gateway:
+    build: ./api-gateway
+    container_name: api_gateway
+    ports:
+      - "80:80"
+    depends_on:
+      - user-service
+      - event-service
+      - session-service
+      - speaker-service
+    networks:
+      - microservices-network
+    restart: unless-stopped
+
+networks:
+  microservices-network:
+    driver: bridge
+
+volumes:
+  rabbitmq_data:
+  user_db_data:
+  event_db_data:
+  session_db_data:
+  speaker_db_data:

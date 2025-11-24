@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package speaker;
+
+service SpeakerService {
+  rpc ValidateSpeaker(SpeakerRequest) returns (SpeakerResponse);
+  rpc GetSpeakerInfo(SpeakerRequest) returns (SpeakerInfo);
+}
+
+message SpeakerRequest {
+  string speakerId = 1;
+}
+
+message SpeakerResponse {
+  bool exists = 1;
+  string message = 2;
+}
+
+message SpeakerInfo {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool deleted = 4;
+}

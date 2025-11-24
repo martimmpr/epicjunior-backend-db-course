@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package session;
+
+service SessionService {
+  rpc ValidateSession(SessionRequest) returns (SessionResponse);
+  rpc GetSessionInfo(SessionRequest) returns (SessionInfo);
+}
+
+message SessionRequest {
+  string sessionId = 1;
+}
+
+message SessionResponse {
+  bool exists = 1;
+  string message = 2;
+}
+
+message SessionInfo {
+  string id = 1;
+  string name = 2;
+  string type = 3;
+  string eventId = 4;
+  bool deleted = 5;
+}
