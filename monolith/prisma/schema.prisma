@@ -111,7 +111,6 @@ model Session {
   local     String
   date      DateTime
   duration  Int         // minutes
-  time      String      // HH:MM format
   mandatory Boolean     @default(false)
   eventId   String      @db.Uuid
   deleted   Boolean     @default(false)

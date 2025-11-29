@@ -5,8 +5,8 @@ import * as speakerController from './controller';
 const router = Router();
 
 router.post('/', authMiddleware, adminMiddleware, speakerController.createSpeaker);
-router.get('/:id', speakerController.getSpeaker);
-router.get('/', speakerController.listSpeakers);
+router.get('/:id', authMiddleware, speakerController.getSpeaker);
+router.get('/', authMiddleware, speakerController.listSpeakers);
 router.put('/:id', authMiddleware, adminMiddleware, speakerController.updateSpeaker);
 router.delete('/:id', authMiddleware, adminMiddleware, speakerController.deleteSpeaker);
 

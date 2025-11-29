@@ -5,8 +5,8 @@ import * as sessionController from './controller';
 const router = Router();
 
 router.post('/', authMiddleware, adminMiddleware, sessionController.createSession);
-router.get('/:id', sessionController.getSession);
-router.get('/', sessionController.listSessions);
+router.get('/:id', authMiddleware, sessionController.getSession);
+router.get('/', authMiddleware, sessionController.listSessions);
 router.put('/:id', authMiddleware, adminMiddleware, sessionController.updateSession);
 router.delete('/:id', authMiddleware, adminMiddleware, sessionController.deleteSession);
 router.post('/:id/speakers/:speakerId', authMiddleware, adminMiddleware, sessionController.addSpeaker);

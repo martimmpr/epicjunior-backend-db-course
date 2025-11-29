@@ -5,7 +5,7 @@ import { generateTokens, TokenPayload } from '../../shared/utils/jwt';
 import { RegisterInput, LoginInput } from './validation';
 
 const prisma = new PrismaClient();
-const BCRYPT_ROUNDS = process.env.BCRYPT_ROUNDS || 10;
+const BCRYPT_ROUNDS = parseInt(process.env.BCRYPT_ROUNDS || '10', 10);
 
 export class AuthService {
     async register(data: RegisterInput) {
