@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15-alpine
@@ -14,7 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U monolith_user"]
+      test: ["CMD-SHELL", "pg_isready -U monolith_user -d monolith_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -26,7 +24,7 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: postgresql://monolith_user:monolith_password@postgres:5432/monolith_db?schema=public
-      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      JWT_SECRET: monolith-backend
       JWT_ACCESS_EXPIRATION: 15m
       JWT_REFRESH_EXPIRATION: 7d
       NODE_ENV: production

@@ -51,20 +51,33 @@ The server will start on http://localhost:3000
 
 ## Quick Start (Production)
 
+### First Time Setup
+
+Before deploying to production for the first time, you need to create the initial migration:
+
+```bash
+# Start only the database
+docker compose up -d postgres
+
+# Create initial migration (only needed once)
+npx prisma migrate dev --name init
+
+# Stop the database
+docker compose down
+```
+
+### Deploy
+
 Deploy everything with a single command:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 This automatically:
 - Starts PostgreSQL database (port 5432)
-- Runs database migrations
+- Runs database migrations (`prisma migrate deploy`)
 - Builds and starts the application (port 3000)
-
-The app automatically:
-- Runs `prisma migrate deploy`
-- Starts the server
 
 Access at http://localhost:3000
 
