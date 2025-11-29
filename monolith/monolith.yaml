@@ -1,0 +1,941 @@
+type: collection.insomnia.rest/5.0
+name: Monolith - EPIC Júnior Backend Course
+meta:
+  id: wrk_71166793f92e407bbc1d94ce81a1f0b1
+  created: 1764452365867
+  modified: 1764452365867
+  description: ""
+collection:
+  - name: Auth Service
+    meta:
+      id: fld_e2ad5f0e7307448589399ee0b3230f4f
+      created: 1732910000001
+      modified: 1732910000001
+      sortKey: -1732910000100
+      description: Authentication and user management endpoints
+    children:
+      - url: http://localhost:3000/auth/register
+        name: Register
+        meta:
+          id: req_7a7d87208d294708b0f1d70997f1f8de
+          created: 1732910000002
+          modified: 1764454555421
+          isPrivate: false
+          description: Create a new user account
+          sortKey: -1732910000100
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Martim Ribeiro",
+              "email": "martim.ribeiro@example.com",
+              "password": "Example1!"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: none
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/auth/login
+        name: Login
+        meta:
+          id: req_f9fe0073b2854b2295014e5ec7b0fae5
+          created: 1732910000003
+          modified: 1764454561244
+          isPrivate: false
+          description: Login and get access token
+          sortKey: -1732910000090
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "martim.ribeiro@example.com",
+              "password": "Example1!"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: none
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/auth/me
+        name: Get My Profile
+        meta:
+          id: req_6578eaa008a6461f90724731597b404c
+          created: 1732910000004
+          modified: 1764454636837
+          isPrivate: false
+          description: Get authenticated user profile
+          sortKey: -1732910000080
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Users Service
+    meta:
+      id: fld_ec2158e590734f6090319326090a420c
+      created: 1732910000010
+      modified: 1732910000010
+      sortKey: -1732910000090
+      description: User management endpoints
+    children:
+      - url: http://localhost:3000/users/7455e151-ec87-4eb3-9ce3-392d971524c8
+        name: Get User By ID
+        meta:
+          id: req_ee85b58d83fe472b9a16dfdc697a5a8d
+          created: 1732910000011
+          modified: 1764454656326
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000100
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/users
+        name: List All Users (Admin)
+        meta:
+          id: req_5919a166d435486aa01f4f3e4e180a84
+          created: 1732910000012
+          modified: 1764454886945
+          isPrivate: false
+          description: Admin only - List all users
+          sortKey: -1732910000090
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/users/7455e151-ec87-4eb3-9ce3-392d971524c8
+        name: Update User
+        meta:
+          id: req_e9a20e14dbb6400294972c906d657ae5
+          created: 1732910000013
+          modified: 1764455026495
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000080
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Martim Ribeiro Updated",
+              "email": "martim.ribeiro.updated@example.com"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/users/7455e151-ec87-4eb3-9ce3-392d971524c8
+        name: Delete User (Admin)
+        meta:
+          id: req_297c6f2bc15e45ae97a9ebe3545b58ae
+          created: 1732910000014
+          modified: 1764455074409
+          isPrivate: false
+          description: Admin only - Delete user
+          sortKey: -1732910000070
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/users/change-password
+        name: Change Password
+        meta:
+          id: req_9646fa6c294e4bcfbdfe05d2e71b959e
+          created: 1732910000015
+          modified: 1764455100622
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000060
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "currentPassword": "Example1!",
+              "newPassword": "Example2!"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/users/7455e151-ec87-4eb3-9ce3-392d971524c8/events
+        name: Get User Events
+        meta:
+          id: req_f51746ce8fb54437a4195bf9e5d5ce70
+          created: 1732910000016
+          modified: 1764455122314
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000050
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/users/7455e151-ec87-4eb3-9ce3-392d971524c8/sessions
+        name: Get User Sessions
+        meta:
+          id: req_eb40379548d5489e8225324c1b26da96
+          created: 1732910000017
+          modified: 1764455125976
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000040
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Events Service
+    meta:
+      id: fld_3e17e365f5b44d4088034421ac8f5bed
+      created: 1732910000020
+      modified: 1732910000020
+      sortKey: -1732910000080
+      description: Event management endpoints
+    children:
+      - url: http://localhost:3000/events
+        name: Create Event (Admin)
+        meta:
+          id: req_ac5355515fdb4a76bbb58d96cc8c234c
+          created: 1732910000021
+          modified: 1764455513408
+          isPrivate: false
+          description: Admin only - Create new event
+          sortKey: -1732910000100
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Inceptio",
+              "organization": "EPIC Júnior",
+              "date": "2025-12-05T09:00:00Z",
+              "logo": "https://example.com/logo.png",
+              "description": "Inceptio Powered by EPIC Júnior"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03
+        name: Get Event By ID
+        meta:
+          id: req_a7e637d497ea42ffa9e012cde338090a
+          created: 1732910000022
+          modified: 1764455726012
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000090
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/events
+        name: List All Events
+        meta:
+          id: req_777b77b570644fae885d3e92e09bfd8b
+          created: 1732910000023
+          modified: 1764455736562
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000080
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03
+        name: Update Event (Admin)
+        meta:
+          id: req_4ac82de8f0c34e16a646f8d198e1bb5b
+          created: 1732910000024
+          modified: 1764455776207
+          isPrivate: false
+          description: Admin only - Update event
+          sortKey: -1732910000070
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Inceptio 26",
+              "date": "2025-12-05T11:00:00Z",
+              "description": "Inceptio 26 Powered by EPIC Júnior"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03
+        name: Delete Event (Admin)
+        meta:
+          id: req_8990cf4136284fefb1db4b72d3a687c3
+          created: 1732910000025
+          modified: 1764455787889
+          isPrivate: false
+          description: Admin only - Delete event
+          sortKey: -1732910000060
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03/enroll
+        name: Enroll in Event
+        meta:
+          id: req_bc1096b0979d43c2bfe5b5096fe9ae15
+          created: 1732910000026
+          modified: 1764455808455
+          isPrivate: false
+          description: Enroll authenticated user in event
+          sortKey: -1732910000050
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03/leave
+        name: Leave Event
+        meta:
+          id: req_2ddb5fd1b2884fdf953d28219778b9f1
+          created: 1732910000027
+          modified: 1764455833815
+          isPrivate: false
+          description: Unenroll from event
+          sortKey: -1732910000040
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Sessions Service
+    meta:
+      id: fld_fa0f84c3cb314308bcd871b2f09ee4ac
+      created: 1732910000030
+      modified: 1732910000030
+      sortKey: -1732910000070
+      description: Session management endpoints
+    children:
+      - url: http://localhost:3000/sessions
+        name: Create Session (Admin)
+        meta:
+          id: req_767dabd0ee5b468b90b22893c754e6ac
+          created: 1732910000031
+          modified: 1764456306876
+          isPrivate: false
+          description: Admin only - Create new session
+          sortKey: -1732910000100
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "eventId": "cb2b7be8-bebd-4d05-9a12-f4b991ec3f03",
+              "name": "Introduction to Microservices",
+              "type": "WORKSHOP",
+            	"local": "Nave",
+              "date": "2025-12-05T10:00:00Z",
+              "duration": 120,
+              "mandatory": true
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79
+        name: Get Session By ID
+        meta:
+          id: req_b5c7e8126b2840c2b484bf24fc285e33
+          created: 1732910000032
+          modified: 1764456912024
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000090
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/sessions
+        name: List All Sessions
+        meta:
+          id: req_1cee96ee392b44bbbfbe782c08730ef7
+          created: 1732910000033
+          modified: 1764456936260
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000080
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79
+        name: Update Session (Admin)
+        meta:
+          id: req_f13cb719202c4610a021cb77eecfd701
+          created: 1732910000034
+          modified: 1764457098406
+          isPrivate: false
+          description: Admin only - Update session
+          sortKey: -1732910000070
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Advanced Microservices",
+              "duration": 60,
+              "mandatory": false
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79
+        name: Delete Session (Admin)
+        meta:
+          id: req_7fc2dfd4844f484da97f21b7b6f0243d
+          created: 1732910000035
+          modified: 1764457107606
+          isPrivate: false
+          description: Admin only - Delete session
+          sortKey: -1732910000060
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79/speakers/ff16ec84-eded-47d9-abff-474c55453438
+        name: Add Speaker to Session (Admin)
+        meta:
+          id: req_a3d66fcb49cc44e4952cf24e78a74a0d
+          created: 1732910000036
+          modified: 1764457404566
+          isPrivate: false
+          description: Admin only - Add speaker to session
+          sortKey: -1732910000050
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79/speakers/ff16ec84-eded-47d9-abff-474c55453438
+        name: Remove Speaker from Session (Admin)
+        meta:
+          id: req_5c78092356f4484f8e5ad8f153c88dbb
+          created: 1732910000037
+          modified: 1764457410336
+          isPrivate: false
+          description: Admin only - Remove speaker from session
+          sortKey: -1732910000040
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79/attend
+        name: Attend Session
+        meta:
+          id: req_92b66075c6214f9aadb22631cc2b926a
+          created: 1732910000038
+          modified: 1764457130704
+          isPrivate: false
+          description: Mark attendance for session
+          sortKey: -1732910000030
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Speakers Service
+    meta:
+      id: fld_fdfd64a096c94003a7fa454ec77485ae
+      created: 1732910000040
+      modified: 1732910000040
+      sortKey: -1732910000060
+      description: Speaker management endpoints
+    children:
+      - url: http://localhost:3000/speakers
+        name: Create Speaker (Admin)
+        meta:
+          id: req_34299042458144a49998233d3c370aeb
+          created: 1732910000041
+          modified: 1764457393977
+          isPrivate: false
+          description: Admin only - Create new speaker
+          sortKey: -1732910000100
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Martim Ribeiro",
+            	"avatar": "https://example.com/avatar.jpg",
+              "description": "Software Student"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/speakers/ff16ec84-eded-47d9-abff-474c55453438
+        name: Get Speaker By ID
+        meta:
+          id: req_00b3afee1e624fce88c6e07a1e274a93
+          created: 1732910000042
+          modified: 1764457440576
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000090
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/speakers
+        name: List All Speakers
+        meta:
+          id: req_bfd8a7a9801f4a479725d9bc43f8402f
+          created: 1732910000043
+          modified: 1764457452355
+          isPrivate: false
+          description: ""
+          sortKey: -1732910000080
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/speakers/ff16ec84-eded-47d9-abff-474c55453438
+        name: Update Speaker (Admin)
+        meta:
+          id: req_ec0493870d4e42659c0bba39a31b11a2
+          created: 1732910000044
+          modified: 1764457675257
+          isPrivate: false
+          description: Admin only - Update speaker
+          sortKey: -1732910000070
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "name": "Martim Ribeiro Updated",
+            	"avatar": "https://example.com/avatar.jpg",
+              "description": "Senior Software Student"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:3000/speakers/ff16ec84-eded-47d9-abff-474c55453438
+        name: Delete Speaker (Admin)
+        meta:
+          id: req_8d058f6cf5da4b16843a36dafb1cbcce
+          created: 1732910000045
+          modified: 1764457646220
+          isPrivate: false
+          description: Admin only - Delete speaker
+          sortKey: -1732910000060
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: bearer
+          token: "{% response 'body', 'req_f9fe0073b2854b2295014e5ec7b0fae5',
+            'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'always', 60 %}"
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: General
+    meta:
+      id: fld_7ba918ec3af443299413056b5491a576
+      created: 1732910000050
+      modified: 1732910000050
+      sortKey: -1732910000050
+      description: General endpoints
+    children:
+      - url: http://localhost:3000/health
+        name: Health Check
+        meta:
+          id: req_70e46efaede34b14ad2b8e3b08eb7d54
+          created: 1732910000051
+          modified: 1732910000051
+          isPrivate: false
+          description: Check if API is running
+          sortKey: -1732910000100
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.3.0
+        authentication:
+          type: none
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_8c9fba8b9ecd4fcfa06a90fce478986f
+    created: 1732910000100
+    modified: 1732910000100
+environments:
+  name: Base Environment
+  meta:
+    id: env_80bf2bff258a4e20ae5e8de9efe10970
+    created: 1732910000200
+    modified: 1732910000200
+    isPrivate: false
