@@ -1,20 +1,54 @@
 import { Request, Response, NextFunction } from 'express';
+import { ZodError } from 'zod';
 import { logger } from '../utils/logger';
 
 export class AppError extends Error {
-    constructor(public message: string, public statusCode: number = 500) {
+    statusCode: number;
+    isOperational: boolean;
+
+    constructor(message: string, statusCode: number = 500) {
         super(message);
-        this.name = 'AppError';
+        this.statusCode = statusCode;
+        this.isOperational = true;
+
+        Error.captureStackTrace(this, this.constructor);
     }
 }
 
-export const errorHandler = (err: Error | AppError, _req: Request, res: Response, _next: NextFunction): void => {
-    logger.error('Error:', err);
+export const errorHandler = (err: Error | AppError | ZodError, req: Request, res: Response, _next: NextFunction): void => {
+    logger.error('Error occurred:', {
+        error: err.message,
+        stack: err.stack,
+        path: req.path,
+        method: req.method,
+    });
 
-    if (err instanceof AppError) {
-        res.status(err.statusCode).json({ error: err.message });
+    // Zod validation errors
+    if (err instanceof ZodError) {
+        res.status(400).json({
+            error: 'Validation failed',
+            details: err.errors.map((e) => ({
+                path: e.path.join('.'),
+                message: e.message,
+            })),
+        });
+        
         return;
     }
-    
-    res.status(500).json({ error: 'Internal server error!' });
+
+    // Custom application errors
+    if (err instanceof AppError && err.isOperational) {
+        res.status(err.statusCode).json({
+            error: err.message,
+        });
+
+        return;
+    }
+
+    // Default to 500 server error
+    res.status(500).json({
+        error: process.env.NODE_ENV === 'production' 
+        ? 'Internal server error' 
+        : err.message,
+    });
 };
