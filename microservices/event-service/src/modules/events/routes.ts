@@ -5,8 +5,8 @@ import * as controller from './controller';
 const router = Router();
 
 router.post('/', authMiddleware, adminMiddleware, controller.createEventController);
-router.get('/', controller.getEvents);
-router.get('/:id', controller.getEvent);
+router.get('/', authMiddleware, controller.getEvents);
+router.get('/:id', authMiddleware, controller.getEvent);
 router.put('/:id', authMiddleware, adminMiddleware, controller.updateEventController);
 router.delete('/:id', authMiddleware, adminMiddleware, controller.deleteEventController);
 router.post('/:id/enroll', authMiddleware, controller.enrollController);

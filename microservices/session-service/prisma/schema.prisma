@@ -20,7 +20,6 @@ model Session {
   type      SessionType
   local     String
   date      DateTime
-  time      String
   duration  Int
   mandatory Boolean     @default(false)
   eventId   String      @db.Uuid
