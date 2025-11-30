@@ -2,7 +2,7 @@
 
 ## Quick Start (Development)
 
-Follow these steps to get the microservices backend running:
+Follow these steps to get the microservices backend running in development mode:
 
 ### 1. Start Infrastructure
 
@@ -65,22 +65,57 @@ The service will start on http://localhost:3004 (HTTP) and localhost:50052 (gRPC
 
 ## Quick Start (Production)
 
+### First Time Setup
+
+Before deploying to production for the first time, you need to create the initial migrations for each service:
+
+```bash
+cd microservices
+
+# Start only the databases
+docker compose up -d user-db event-db session-db speaker-db
+
+# Create migrations for each service
+cd user-service
+npx prisma migrate dev --name init
+cd ..
+
+cd event-service
+npx prisma migrate dev --name init
+cd ..
+
+cd session-service
+npx prisma migrate dev --name init
+cd ..
+
+cd speaker-service
+npx prisma migrate dev --name init
+cd ..
+
+# Stop everything
+docker compose down
+```
+
+### Deploy
+
 Deploy everything with a single command:
 
 ```bash
-docker compose up -d
+docker compose up -d --build
 ```
 
 This automatically:
-- Starts all databases (PostgreSQL)
-- Starts RabbitMQ message broker
-- Runs database migrations for all services
-- Builds and starts all microservices
-- Starts the API Gateway (Nginx)
+- Starts all PostgreSQL databases (ports 5432-5435)
+- Starts RabbitMQ (ports 5672, 15672)
+- Runs database migrations for each service (`prisma migrate deploy`)
+- Builds and starts all microservices:
+  - User Service (port 3001)
+  - Event Service (port 3002)
+  - Session Service (port 3003 HTTP, 50051 gRPC)
+  - Speaker Service (port 3004, 50052 gRPC)
+  - API Gateway (port 80)
 
-Access the API at http://localhost
-
-**IMPORTANT:** Change `JWT_SECRET` in production!
+Access at http://localhost (via API Gateway)
 
 ---
 
@@ -94,6 +129,88 @@ Access the API at http://localhost
 | Speaker Service | 3004 | 50052 | 5435 |
 | RabbitMQ | - | - | 5672 (15672 UI) |
 | API Gateway | 80 | - | - |
+
+---
+
+## Docker Commands
+
+```bash
+# View logs of all services
+docker compose logs -f
+
+# View logs of specific service
+docker compose logs -f user-service
+docker compose logs -f event-service
+docker compose logs -f session-service
+docker compose logs -f speaker-service
+docker compose logs -f api-gateway
+
+# Restart a specific service
+docker compose restart user-service
+
+# Stop all services
+docker compose down
+
+# Stop and remove volumes (WARNING: deletes all data)
+docker compose down -v
+
+# Rebuild and restart
+docker compose up -d --build
+```
+
+---
+
+## Troubleshooting
+
+### Port 80 already in use
+
+If you see "address already in use" for port 80:
+
+```bash
+# Check what's using port 80
+sudo lsof -i :80
+
+# Stop Nginx if it's running
+sudo systemctl stop nginx
+
+# Or change the API Gateway port in docker-compose.yml
+# ports:
+#   - "8080:80"  # Access at http://localhost:8080
+```
+
+### Database connection issues
+
+```bash
+# Check if databases are healthy
+docker compose ps
+
+# Restart databases
+docker compose restart user-db event-db session-db speaker-db
+
+# Check database logs
+docker compose logs user-db
+```
+
+### Migration errors
+
+If migrations fail on first run:
+
+```bash
+# Stop everything
+docker compose down
+
+# Start only databases
+docker compose up -d user-db event-db session-db speaker-db
+
+# Run migrations manually for each service
+cd user-service && npx prisma migrate dev --name init && cd ..
+cd event-service && npx prisma migrate dev --name init && cd ..
+cd session-service && npx prisma migrate dev --name init && cd ..
+cd speaker-service && npx prisma migrate dev --name init && cd ..
+
+# Now start everything
+docker compose up -d
+```
 
 ---
 
