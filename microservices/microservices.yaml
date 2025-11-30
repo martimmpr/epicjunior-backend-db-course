@@ -14,7 +14,7 @@ collection:
       sortKey: -1732910000100
       description: Authentication and user management endpoints
     children:
-      - url: http://localhost/api/auth/register
+      - url: http://localhost:8080/api/auth/register
         name: Register
         meta:
           id: req_register_micro
@@ -47,7 +47,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/auth/login
+      - url: http://localhost:8080/api/auth/login
         name: Login
         meta:
           id: req_login_micro
@@ -79,7 +79,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/auth/me
+      - url: http://localhost:8080/api/auth/me
         name: Get My Profile
         meta:
           id: req_me_micro
@@ -111,7 +111,7 @@ collection:
       sortKey: -1732910000090
       description: User management endpoints
     children:
-      - url: http://localhost/api/users/7455e151-ec87-4eb3-9ce3-392d971524c8
+      - url: http://localhost:8080/api/users/7455e151-ec87-4eb3-9ce3-392d971524c8
         name: Get User By ID
         meta:
           id: req_get_user_micro
@@ -135,7 +135,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/users
+      - url: http://localhost:8080/api/users
         name: List All Users (Admin)
         meta:
           id: req_list_users_micro
@@ -159,7 +159,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/users/7455e151-ec87-4eb3-9ce3-392d971524c8
+      - url: http://localhost:8080/api/users/7455e151-ec87-4eb3-9ce3-392d971524c8
         name: Update User
         meta:
           id: req_update_user_micro
@@ -192,7 +192,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/users/7455e151-ec87-4eb3-9ce3-392d971524c8
+      - url: http://localhost:8080/api/users/7455e151-ec87-4eb3-9ce3-392d971524c8
         name: Delete User (Admin)
         meta:
           id: req_delete_user_micro
@@ -216,7 +216,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/users/change-password
+      - url: http://localhost:8080/api/users/change-password
         name: Change Password
         meta:
           id: req_change_password_micro
@@ -249,7 +249,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/users/7455e151-ec87-4eb3-9ce3-392d971524c8/sessions
+      - url: http://localhost:8080/api/users/7455e151-ec87-4eb3-9ce3-392d971524c8/sessions
         name: Get User Sessions
         meta:
           id: req_user_sessions_micro
@@ -273,7 +273,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/users/attend-session
+      - url: http://localhost:8080/api/users/attend-session
         name: Attend Session
         meta:
           id: req_attend_session_micro
@@ -314,7 +314,7 @@ collection:
       sortKey: -1732910000080
       description: Event management endpoints
     children:
-      - url: http://localhost/api/events
+      - url: http://localhost:8080/api/events
         name: Create Event (Admin)
         meta:
           id: req_create_event_micro
@@ -350,7 +350,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03
+      - url: http://localhost:8080/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03
         name: Get Event By ID
         meta:
           id: req_get_event_micro
@@ -374,7 +374,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/events
+      - url: http://localhost:8080/api/events
         name: List All Events
         meta:
           id: req_list_events_micro
@@ -398,7 +398,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03
+      - url: http://localhost:8080/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03
         name: Update Event (Admin)
         meta:
           id: req_update_event_micro
@@ -432,7 +432,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03
+      - url: http://localhost:8080/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03
         name: Delete Event (Admin)
         meta:
           id: req_delete_event_micro
@@ -456,7 +456,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03/enroll
+      - url: http://localhost:8080/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03/enroll
         name: Enroll in Event
         meta:
           id: req_enroll_event_micro
@@ -480,7 +480,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03/leave
+      - url: http://localhost:8080/api/events/cb2b7be8-bebd-4d05-9a12-f4b991ec3f03/leave
         name: Leave Event
         meta:
           id: req_leave_event_micro
@@ -512,7 +512,7 @@ collection:
       sortKey: -1732910000070
       description: Session management endpoints
     children:
-      - url: http://localhost/api/sessions
+      - url: http://localhost:8080/api/sessions
         name: Create Session (Admin)
         meta:
           id: req_create_session_micro
@@ -550,7 +550,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79
+      - url: http://localhost:8080/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79
         name: Get Session By ID
         meta:
           id: req_get_session_micro
@@ -574,7 +574,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/sessions
+      - url: http://localhost:8080/api/sessions
         name: List All Sessions
         meta:
           id: req_list_sessions_micro
@@ -598,7 +598,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79
+      - url: http://localhost:8080/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79
         name: Update Session (Admin)
         meta:
           id: req_update_session_micro
@@ -632,7 +632,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79
+      - url: http://localhost:8080/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79
         name: Delete Session (Admin)
         meta:
           id: req_delete_session_micro
@@ -656,7 +656,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79/speakers
+      - url: http://localhost:8080/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79/speakers
         name: Add Speaker to Session (Admin)
         meta:
           id: req_add_speaker_session_micro
@@ -688,7 +688,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79/speakers/ff16ec84-eded-47d9-abff-474c55453438
+      - url: http://localhost:8080/api/sessions/e6faa0d3-a255-466c-81b5-ca609b577d79/speakers/ff16ec84-eded-47d9-abff-474c55453438
         name: Remove Speaker from Session (Admin)
         meta:
           id: req_remove_speaker_session_micro
@@ -720,7 +720,7 @@ collection:
       sortKey: -1732910000060
       description: Speaker management endpoints
     children:
-      - url: http://localhost/api/speakers
+      - url: http://localhost:8080/api/speakers
         name: Create Speaker (Admin)
         meta:
           id: req_create_speaker_micro
@@ -754,7 +754,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/speakers/ff16ec84-eded-47d9-abff-474c55453438
+      - url: http://localhost:8080/api/speakers/ff16ec84-eded-47d9-abff-474c55453438
         name: Get Speaker By ID
         meta:
           id: req_get_speaker_micro
@@ -778,7 +778,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/speakers
+      - url: http://localhost:8080/api/speakers
         name: List All Speakers
         meta:
           id: req_list_speakers_micro
@@ -802,7 +802,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/speakers/ff16ec84-eded-47d9-abff-474c55453438
+      - url: http://localhost:8080/api/speakers/ff16ec84-eded-47d9-abff-474c55453438
         name: Update Speaker (Admin)
         meta:
           id: req_update_speaker_micro
@@ -836,7 +836,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost/api/speakers/ff16ec84-eded-47d9-abff-474c55453438
+      - url: http://localhost:8080/api/speakers/ff16ec84-eded-47d9-abff-474c55453438
         name: Delete Speaker (Admin)
         meta:
           id: req_delete_speaker_micro
@@ -868,7 +868,7 @@ collection:
       sortKey: -1732910000050
       description: General endpoints
     children:
-      - url: http://localhost/health
+      - url: http://localhost:8080/health
         name: Health Check - API Gateway
         meta:
           id: req_health_gateway_micro

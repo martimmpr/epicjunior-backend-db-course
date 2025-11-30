@@ -204,7 +204,7 @@ services:
     build: ./api-gateway
     container_name: api_gateway
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - user-service
       - event-service

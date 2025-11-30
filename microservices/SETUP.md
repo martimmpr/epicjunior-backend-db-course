@@ -113,9 +113,9 @@ This automatically:
   - Event Service (port 3002)
   - Session Service (port 3003 HTTP, 50051 gRPC)
   - Speaker Service (port 3004, 50052 gRPC)
-  - API Gateway (port 80)
+  - API Gateway (port 8080)
 
-Access at http://localhost (via API Gateway)
+Access at http://localhost:8080 (via API Gateway)
 
 ---
 
@@ -128,7 +128,7 @@ Access at http://localhost (via API Gateway)
 | Session Service | 3003 | 50051 | 5434 |
 | Speaker Service | 3004 | 50052 | 5435 |
 | RabbitMQ | - | - | 5672 (15672 UI) |
-| API Gateway | 80 | - | - |
+| API Gateway | 8080 | - | - |
 
 ---
 
@@ -162,20 +162,17 @@ docker compose up -d --build
 
 ## Troubleshooting
 
-### Port 80 already in use
+### Port 8080 already in use
 
-If you see "address already in use" for port 80:
+If you see "address already in use" for port 8080:
 
 ```bash
-# Check what's using port 80
-sudo lsof -i :80
-
-# Stop Nginx if it's running
-sudo systemctl stop nginx
+# Check what's using port 8080
+sudo lsof -i :8080
 
 # Or change the API Gateway port in docker-compose.yml
 # ports:
-#   - "8080:80"  # Access at http://localhost:8080
+#   - "3000:80"  # Access at http://localhost:3000
 ```
 
 ### Database connection issues
