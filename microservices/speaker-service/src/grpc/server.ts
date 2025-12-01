@@ -24,8 +24,11 @@ export const startGrpcServer = async () => {
     const PORT = process.env.GRPC_PORT || 50052;
     
     server.bindAsync(`0.0.0.0:${PORT}`, grpc.ServerCredentials.createInsecure(), (err: any, port: any) => {
-        if (err) { logger.error('gRPC server error:', err); return; }
-        server.start();
+        if (err) { 
+            logger.error('gRPC server error:', err); 
+            return; 
+        }
+        
         logger.info(`gRPC server running on port ${port}`);
     });
 };

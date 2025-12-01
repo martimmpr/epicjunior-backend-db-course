@@ -29,7 +29,6 @@ export const startGrpcServer = async () => {
             return; 
         }
         
-        server.start();
         logger.info(`gRPC server running on port ${port}`);
     });
 };
