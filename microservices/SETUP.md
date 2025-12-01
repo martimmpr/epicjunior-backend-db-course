@@ -2,18 +2,21 @@
 
 ## Quick Start (Development)
 
-Follow these steps to get the microservices backend running in development mode:
+This is the recommended development workflow where infrastructure (databases, RabbitMQ, and API Gateway) runs in Docker, but services run locally for easier development and debugging.
 
-### 1. Start Infrastructure
+### 1. Start Infrastructure with Docker
 
 ```bash
 cd microservices
-docker compose up -d user-db event-db session-db speaker-db rabbitmq
+docker compose -f docker-compose.dev.yml up -d
 ```
 
-This starts all databases (PostgreSQL) and RabbitMQ.
+This starts:
+- **PostgreSQL Databases** (user-db, event-db, session-db, speaker-db)
+- **RabbitMQ** (message broker)
+- **API Gateway** (nginx configured to proxy to localhost)
 
-### 2. Setup User Service
+### 2. Setup and Start User Service
 
 ```bash
 cd user-service
@@ -23,9 +26,9 @@ npm run prisma:migrate
 npm run dev
 ```
 
-The service will start on http://localhost:3001
+The service will start on **http://localhost:3001**
 
-### 3. Setup Event Service
+### 3. Setup and Start Event Service
 
 ```bash
 cd event-service
@@ -35,9 +38,9 @@ npm run prisma:migrate
 npm run dev
 ```
 
-The service will start on http://localhost:3002
+The service will start on **http://localhost:3002**
 
-### 4. Setup Session Service
+### 4. Setup and Start Session Service
 
 ```bash
 cd session-service
@@ -47,9 +50,9 @@ npm run prisma:migrate
 npm run dev
 ```
 
-The service will start on http://localhost:3003 (HTTP) and localhost:50051 (gRPC)
+The service will start on **http://localhost:3003** (HTTP) and **localhost:50051** (gRPC)
 
-### 5. Setup Speaker Service
+### 5. Setup and Start Speaker Service
 
 ```bash
 cd speaker-service
@@ -59,9 +62,22 @@ npm run prisma:migrate
 npm run dev
 ```
 
-The service will start on http://localhost:3004 (HTTP) and localhost:50052 (gRPC)
+The service will start on **http://localhost:3004** (HTTP) and **localhost:50052** (gRPC)
 
----
+### 6. Test the API
+
+All endpoints are available through the API Gateway at:
+**http://localhost:8080**
+
+Examples:
+- `POST http://localhost:8080/api/auth/register`
+- `POST http://localhost:8080/api/auth/login`
+- `GET http://localhost:8080/api/users/`
+- `GET http://localhost:8080/api/events/`
+- `GET http://localhost:8080/api/sessions/`
+- `GET http://localhost:8080/api/speakers/`
+
+> **Note**: The API Gateway (nginx) is configured in `docker-compose.dev.yml` to proxy requests to `host.docker.internal`, allowing it to access services running locally on your machine.
 
 ## Quick Start (Production)
 
@@ -115,9 +131,7 @@ This automatically:
   - Speaker Service (port 3004, 50052 gRPC)
   - API Gateway (port 8080)
 
-Access at http://localhost:8080 (via API Gateway)
-
----
+Access at **http://localhost:8080** (via API Gateway)
 
 ## Service Ports
 
@@ -130,9 +144,31 @@ Access at http://localhost:8080 (via API Gateway)
 | RabbitMQ | - | - | 5672 (15672 UI) |
 | API Gateway | 8080 | - | - |
 
----
-
 ## Docker Commands
+
+### Development Mode
+
+```bash
+# View logs from infrastructure
+docker compose -f docker-compose.dev.yml logs -f
+
+# View logs from API Gateway
+docker compose -f docker-compose.dev.yml logs -f api-gateway
+
+# View logs from a specific database
+docker compose -f docker-compose.dev.yml logs -f user-db
+
+# Restart API Gateway (after changing nginx.dev.conf)
+docker compose -f docker-compose.dev.yml restart api-gateway
+
+# Stop all infrastructure
+docker compose -f docker-compose.dev.yml down
+
+# Stop and remove volumes (WARNING: deletes all data)
+docker compose -f docker-compose.dev.yml down -v
+```
+
+### Production Mode
 
 ```bash
 # View logs of all services
@@ -158,8 +194,6 @@ docker compose down -v
 docker compose up -d --build
 ```
 
----
-
 ## Troubleshooting
 
 ### Port 8080 already in use
@@ -170,22 +204,30 @@ If you see "address already in use" for port 8080:
 # Check what's using port 8080
 sudo lsof -i :8080
 
-# Or change the API Gateway port in docker-compose.yml
+# Or change the API Gateway port in docker-compose.dev.yml
 # ports:
 #   - "3000:80"  # Access at http://localhost:3000
 ```
+
+### "Couldn't connect to server" error in API Gateway
+
+If the API Gateway cannot connect to services:
+
+1. Verify services are running locally (npm run dev)
+2. Verify `docker-compose.dev.yml` is using `Dockerfile.dev`
+3. Check logs: `docker compose -f docker-compose.dev.yml logs api-gateway`
 
 ### Database connection issues
 
 ```bash
 # Check if databases are healthy
-docker compose ps
+docker compose -f docker-compose.dev.yml ps
 
 # Restart databases
-docker compose restart user-db event-db session-db speaker-db
+docker compose -f docker-compose.dev.yml restart user-db event-db session-db speaker-db
 
 # Check database logs
-docker compose logs user-db
+docker compose -f docker-compose.dev.yml logs user-db
 ```
 
 ### Migration errors
@@ -194,10 +236,10 @@ If migrations fail on first run:
 
 ```bash
 # Stop everything
-docker compose down
+docker compose -f docker-compose.dev.yml down
 
 # Start only databases
-docker compose up -d user-db event-db session-db speaker-db
+docker compose -f docker-compose.dev.yml up -d user-db event-db session-db speaker-db
 
 # Run migrations manually for each service
 cd user-service && npx prisma migrate dev --name init && cd ..
@@ -206,10 +248,21 @@ cd session-service && npx prisma migrate dev --name init && cd ..
 cd speaker-service && npx prisma migrate dev --name init && cd ..
 
 # Now start everything
-docker compose up -d
+docker compose -f docker-compose.dev.yml up -d
 ```
 
----
+### Service not connecting to RabbitMQ
+
+```bash
+# Check if RabbitMQ is running
+docker compose -f docker-compose.dev.yml ps rabbitmq
+
+# View RabbitMQ logs
+docker compose -f docker-compose.dev.yml logs rabbitmq
+
+# Access management interface
+# http://localhost:15672 (user: admin, password: admin123)
+```
 
 ## Development Commands
 
@@ -240,35 +293,6 @@ npm run test
 # Lint code
 npm run lint
 ```
-
----
-
-## Docker Commands
-
-```bash
-# Start all services
-docker compose up -d
-
-# View logs
-docker compose logs -f
-
-# View logs from specific service
-docker compose logs -f user-service
-
-# Stop all services
-docker compose down
-
-# Stop and remove volumes (deletes data)
-docker compose down -v
-
-# Rebuild specific service
-docker compose up -d --build user-service
-
-# View status
-docker compose ps
-```
-
----
 
 ## Database Access
 
