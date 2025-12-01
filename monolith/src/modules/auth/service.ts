@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { AppError } from '../../shared/middleware/errorHandler';
 import { generateTokens, TokenPayload } from '../../shared/utils/jwt';
 import { RegisterInput, LoginInput } from './validation';
