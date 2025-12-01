@@ -135,7 +135,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/api/users
+      - url: http://localhost:8080/api/users/
         name: List All Users (Admin)
         meta:
           id: req_list_users_micro
@@ -314,7 +314,7 @@ collection:
       sortKey: -1732910000080
       description: Event management endpoints
     children:
-      - url: http://localhost:8080/api/events
+      - url: http://localhost:8080/api/events/
         name: Create Event (Admin)
         meta:
           id: req_create_event_micro
@@ -374,7 +374,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/api/events
+      - url: http://localhost:8080/api/events/
         name: List All Events
         meta:
           id: req_list_events_micro
@@ -512,7 +512,7 @@ collection:
       sortKey: -1732910000070
       description: Session management endpoints
     children:
-      - url: http://localhost:8080/api/sessions
+      - url: http://localhost:8080/api/sessions/
         name: Create Session (Admin)
         meta:
           id: req_create_session_micro
@@ -574,7 +574,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/api/sessions
+      - url: http://localhost:8080/api/sessions/
         name: List All Sessions
         meta:
           id: req_list_sessions_micro
@@ -720,7 +720,7 @@ collection:
       sortKey: -1732910000060
       description: Speaker management endpoints
     children:
-      - url: http://localhost:8080/api/speakers
+      - url: http://localhost:8080/api/speakers/
         name: Create Speaker (Admin)
         meta:
           id: req_create_speaker_micro
@@ -778,7 +778,7 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: http://localhost:8080/api/speakers
+      - url: http://localhost:8080/api/speakers/
         name: List All Speakers
         meta:
           id: req_list_speakers_micro
