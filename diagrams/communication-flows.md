@@ -351,23 +351,28 @@ sequenceDiagram
 ```mermaid
 graph TB
     subgraph "Synchronous (gRPC)"
-        S1[Client Service] -->|Request| S2[Server Service]
+        S1["<b>Client Service</b>"] -->|Request| S2["<b>Server Service</b>"]
         S2 -->|Response| S1
         S1 -->|Waits for response| S1
         
-        Note1[Use when:<br/>- Need immediate response<br/>- Validation required<br/>- Data consistency critical]
+        Note1["<b>Use when:</b><br/>- Need immediate response<br/>- Validation required<br/>- Data consistency critical"]
     end
     
     subgraph "Asynchronous (RabbitMQ)"
-        A1[Publisher Service] -->|Publish| Q[Message Queue]
-        Q -->|Consume| A2[Consumer Service]
+        A1["<b>Publisher Service</b>"] -->|Publish| Q["<b>Message Queue</b>"]
+        Q -->|Consume| A2["<b>Consumer Service</b>"]
         A1 -->|Continues immediately| A1
         
-        Note2[Use when:<br/>- Fire and forget<br/>- Event notifications<br/>- Decoupled services]
+        Note2["<b>Use when:</b><br/>- Fire and forget<br/>- Event notifications<br/>- Decoupled services"]
     end
     
-    style Note1 fill:#E0FFE0
-    style Note2 fill:#FFE0E0
+    style Note1 fill:#2ecc71,stroke:#27ae60,stroke-width:3px,color:#000
+    style Note2 fill:#e67e22,stroke:#d35400,stroke-width:3px,color:#fff
+    style S1 fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style S2 fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style A1 fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    style A2 fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    style Q fill:#f39c12,stroke:#d68910,stroke-width:2px,color:#000
 ```
 
 ## Error Handling Patterns
@@ -420,32 +425,44 @@ sequenceDiagram
 
 ```mermaid
 graph LR
-    A[Request] -->|5ms| B[Auth Check]
-    B -->|10ms| C[Business Logic]
-    C -->|20ms| D[Database Query]
-    D -->|5ms| E[Response]
+    A["<b>Request</b>"] -->|5ms| B["<b>Auth Check</b>"]
+    B -->|10ms| C["<b>Business Logic</b>"]
+    C -->|20ms| D["<b>Database Query</b>"]
+    D -->|5ms| E["<b>Response</b>"]
     
-    Total[Total: ~40ms]
+    Total["<b>Total: ~40ms</b>"]
     
-    style Total fill:#90EE90
+    style Total fill:#2ecc71,stroke:#27ae60,stroke-width:3px,color:#000
+    style A fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style B fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    style C fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+    style D fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+    style E fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
 ```
 
 ### Microservices - Higher Latency
 
 ```mermaid
 graph LR
-    A[Request] -->|5ms| B[Gateway]
-    B -->|10ms<br/>network| C[Service A]
-    C -->|20ms| D[Database A]
-    C -->|15ms<br/>gRPC| E[Service B]
-    E -->|20ms| F[Database B]
+    A["<b>Request</b>"] -->|5ms| B["<b>Gateway</b>"]
+    B -->|10ms<br/>network| C["<b>Service A</b>"]
+    C -->|20ms| D["<b>Database A</b>"]
+    C -->|15ms<br/>gRPC| E["<b>Service B</b>"]
+    E -->|20ms| F["<b>Database B</b>"]
     E -->|10ms<br/>network| C
     C -->|10ms<br/>network| B
-    B -->|5ms| G[Response]
+    B -->|5ms| G["<b>Response</b>"]
     
-    Total[Total: ~95ms]
+    Total["<b>Total: ~95ms</b>"]
     
-    style Total fill:#FFB6C1
+    style Total fill:#e74c3c,stroke:#c0392b,stroke-width:3px,color:#fff
+    style A fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style B fill:#95a5a6,stroke:#7f8c8d,stroke-width:2px,color:#000
+    style C fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    style D fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+    style E fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+    style F fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+    style G fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
 ```
 
 **Trade-off**: Microservices add network latency but provide better scalability and resilience.

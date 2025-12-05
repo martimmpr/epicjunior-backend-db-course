@@ -220,23 +220,23 @@ CREATE TABLE session_speakers (
 ```mermaid
 graph TB
     subgraph "User Service Database"
-        UT[users table]
-        UST[user_sessions table]
+        UT["<b>users table</b>"]
+        UST["<b>user_sessions table</b>"]
     end
     
     subgraph "Event Service Database"
-        ET[events table]
-        UET[user_events table]
-        EST[event_sessions table]
+        ET["<b>events table</b>"]
+        UET["<b>user_events table</b>"]
+        EST["<b>event_sessions table</b>"]
     end
     
     subgraph "Session Service Database"
-        ST[sessions table]
-        SST[session_speakers table]
+        ST["<b>sessions table</b>"]
+        SST["<b>session_speakers table</b>"]
     end
     
     subgraph "Speaker Service Database"
-        SpT[speakers table]
+        SpT["<b>speakers table</b>"]
     end
     
     UST -.->|References userId<br/>No FK constraint| UT
@@ -245,10 +245,14 @@ graph TB
     EST -.->|References sessionId<br/>No FK constraint| ST
     SST -.->|References speakerId<br/>No FK constraint| SpT
     
-    style UT fill:#90EE90
-    style ET fill:#87CEEB
-    style ST fill:#FFB6C1
-    style SpT fill:#FFD700
+    style UT fill:#2ecc71,stroke:#27ae60,stroke-width:3px,color:#000
+    style UST fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#000
+    style ET fill:#3498db,stroke:#2980b9,stroke-width:3px,color:#fff
+    style UET fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style EST fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style ST fill:#e74c3c,stroke:#c0392b,stroke-width:3px,color:#fff
+    style SST fill:#e74c3c,stroke:#c0392b,stroke-width:2px,color:#fff
+    style SpT fill:#f39c12,stroke:#d68910,stroke-width:3px,color:#000
 ```
 
 ### 1. User Service Database
@@ -538,21 +542,23 @@ sequenceDiagram
 ```mermaid
 graph TB
     subgraph "Event Service"
-        E1[Event: Web Summit 2025<br/>userId: abc-123<br/>userName: null]
+        E1["<b>Event: Web Summit 2025</b><br/>userId: abc-123<br/>userName: null"]
     end
     
     subgraph "User Service"
-        U1[User: abc-123<br/>name: John Doe<br/>email: john@example.com]
+        U1["<b>User: abc-123</b><br/>name: John Doe<br/>email: john@example.com"]
     end
     
     subgraph "Cache/Denormalization Option"
-        E2[Event: Web Summit 2025<br/>userId: abc-123<br/>userName: John Doe<br/>cached]
+        E2["<b>Event: Web Summit 2025</b><br/>userId: abc-123<br/>userName: John Doe<br/>cached"]
     end
     
     E1 -.->|Query via gRPC<br/>to get user name| U1
     E1 -.->|Or cache user data<br/>for performance| E2
     
-    style E2 fill:#FFFFCC
+    style E2 fill:#f39c12,stroke:#d68910,stroke-width:3px,color:#000
+    style E1 fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style U1 fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#000
 ```
 
 **Strategies:**
@@ -617,21 +623,21 @@ return {
 ```mermaid
 graph LR
     subgraph "Phase 1: Monolithic DB"
-        M[All Tables<br/>in Single DB]
+        M["<b>All Tables</b><br/>in Single DB"]
     end
     
     subgraph "Phase 2: Extract Data"
-        U[(User Tables)]
-        E[(Event Tables)]
-        S[(Session Tables)]
-        Sp[(Speaker Tables)]
+        U["<b>User Tables</b>"]
+        E["<b>Event Tables</b>"]
+        S["<b>Session Tables</b>"]
+        Sp["<b>Speaker Tables</b>"]
     end
     
     subgraph "Phase 3: Microservices DBs"
-        U2[(User DB<br/>Service 1)]
-        E2[(Event DB<br/>Service 2)]
-        S2[(Session DB<br/>Service 3)]
-        Sp2[(Speaker DB<br/>Service 4)]
+        U2["<b>User DB</b><br/>Service 1"]
+        E2["<b>Event DB</b><br/>Service 2"]
+        S2["<b>Session DB</b><br/>Service 3"]
+        Sp2["<b>Speaker DB</b><br/>Service 4"]
     end
     
     M --> U & E & S & Sp
@@ -639,6 +645,16 @@ graph LR
     E --> E2
     S --> S2
     Sp --> Sp2
+    
+    style M fill:#e74c3c,stroke:#c0392b,stroke-width:4px,color:#fff
+    style U fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#000
+    style E fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style S fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+    style Sp fill:#f39c12,stroke:#d68910,stroke-width:2px,color:#000
+    style U2 fill:#2ecc71,stroke:#27ae60,stroke-width:3px,color:#000
+    style E2 fill:#3498db,stroke:#2980b9,stroke-width:3px,color:#fff
+    style S2 fill:#e67e22,stroke:#d35400,stroke-width:3px,color:#fff
+    style Sp2 fill:#f39c12,stroke:#d68910,stroke-width:3px,color:#000
 ```
 
 **Migration Steps:**

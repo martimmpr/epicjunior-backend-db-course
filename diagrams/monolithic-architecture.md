@@ -17,14 +17,14 @@ graph TB
     
     subgraph "Monolithic Application"
         direction TB
-        App[Express.js Application<br/>Port 3000]
+        App["<b>Express.js Application</b><br/>Port 3000"]
         
         subgraph "Application Modules"
-            Auth[Auth Module<br/>Login/Register/JWT]
-            Users[Users Module<br/>User Management]
-            Events[Events Module<br/>Event CRUD]
-            Sessions[Sessions Module<br/>Session Management]
-            Speakers[Speakers Module<br/>Speaker Profiles]
+            Auth["<b>Auth Module</b><br/>Login/Register/JWT"]
+            Users["<b>Users Module</b><br/>User Management"]
+            Events["<b>Events Module</b><br/>Event CRUD"]
+            Sessions["<b>Sessions Module</b><br/>Session Management"]
+            Speakers["<b>Speakers Module</b><br/>Speaker Profiles"]
         end
         
         App --> Auth
@@ -39,17 +39,17 @@ graph TB
     end
     
     subgraph "Data Layer"
-        DB[(PostgreSQL<br/>Single Database<br/>Port 5432)]
+        DB[("<b>PostgreSQL</b><br/>Single Database<br/>Port 5432")]
         
         subgraph "Database Tables"
-            T1[users]
-            T2[events]
-            T3[sessions]
-            T4[speakers]
-            T5[user_events]
-            T6[session_speakers]
-            T7[user_sessions]
-            T8[event_sessions]
+            T1["<b>users</b>"]
+            T2["<b>events</b>"]
+            T3["<b>sessions</b>"]
+            T4["<b>speakers</b>"]
+            T5["<b>user_events</b>"]
+            T6["<b>session_speakers</b>"]
+            T7["<b>user_sessions</b>"]
+            T8["<b>event_sessions</b>"]
         end
     end
     
@@ -72,9 +72,22 @@ graph TB
     DB --> T7
     DB --> T8
     
-    style App fill:#ff9999
-    style DB fill:#99ccff
-    style LB fill:#cccccc
+    style App fill:#e74c3c,stroke:#c0392b,stroke-width:4px,color:#fff
+    style DB fill:#3498db,stroke:#2980b9,stroke-width:4px,color:#fff
+    style LB fill:#95a5a6,stroke:#7f8c8d,stroke-width:3px,color:#000
+    style Auth fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    style Users fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#000
+    style Events fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+    style Sessions fill:#f39c12,stroke:#d68910,stroke-width:2px,color:#000
+    style Speakers fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
+    style T1 fill:#ecf0f1,stroke:#bdc3c7,stroke-width:2px,color:#000
+    style T2 fill:#ecf0f1,stroke:#bdc3c7,stroke-width:2px,color:#000
+    style T3 fill:#ecf0f1,stroke:#bdc3c7,stroke-width:2px,color:#000
+    style T4 fill:#ecf0f1,stroke:#bdc3c7,stroke-width:2px,color:#000
+    style T5 fill:#ecf0f1,stroke:#bdc3c7,stroke-width:2px,color:#000
+    style T6 fill:#ecf0f1,stroke:#bdc3c7,stroke-width:2px,color:#000
+    style T7 fill:#ecf0f1,stroke:#bdc3c7,stroke-width:2px,color:#000
+    style T8 fill:#ecf0f1,stroke:#bdc3c7,stroke-width:2px,color:#000
 ```
 
 ## Deployment Architecture
@@ -83,20 +96,20 @@ graph TB
 graph LR
     subgraph "Single Server/Container"
         direction TB
-        Node[Node.js Runtime]
-        Code[Single Codebase<br/>All Modules]
+        Node["<b>Node.js Runtime</b>"]
+        Code["<b>Single Codebase</b><br/>All Modules"]
         Node --> Code
     end
     
     subgraph "Database Server"
-        PG[(PostgreSQL<br/>All Tables)]
+        PG[("<b>PostgreSQL</b><br/>All Tables")]
     end
     
     Code -->|Single Connection Pool| PG
     
-    style Node fill:#90EE90
-    style Code fill:#ff9999
-    style PG fill:#99ccff
+    style Node fill:#2ecc71,stroke:#27ae60,stroke-width:3px,color:#000
+    style Code fill:#e74c3c,stroke:#c0392b,stroke-width:3px,color:#fff
+    style PG fill:#3498db,stroke:#2980b9,stroke-width:3px,color:#fff
 ```
 
 ## Characteristics
@@ -122,18 +135,23 @@ graph LR
 
 ```mermaid
 graph TD
-    A[Traffic Increase] --> B{Scale Options?}
-    B -->|Only Option| C[Vertical Scaling<br/>Bigger Server]
-    B -.->|Not Possible| D[Horizontal Scaling<br/>Scale Specific Module]
+    A["<b>Traffic Increase</b>"] --> B{"<b>Scale Options?</b>"}
+    B -->|Only Option| C["<b>Vertical Scaling</b><br/>Bigger Server"]
+    B -.->|Not Possible| D["<b>Horizontal Scaling</b><br/>Scale Specific Module"]
     
-    C --> E[Higher Costs]
-    C --> F[Hardware Limits]
+    C --> E["<b>Higher Costs</b>"]
+    C --> F["<b>Hardware Limits</b>"]
     
-    E --> G[Eventually Hits Ceiling]
+    E --> G["<b>Eventually Hits Ceiling</b>"]
     F --> G
     
-    style D fill:#ffcccc,stroke:#ff0000,stroke-width:3px
-    style G fill:#ff9999
+    style D fill:#e74c3c,stroke:#c0392b,stroke-width:4px,color:#fff
+    style G fill:#e67e22,stroke:#d35400,stroke-width:3px,color:#fff
+    style A fill:#3498db,stroke:#2980b9,stroke-width:2px,color:#fff
+    style B fill:#f39c12,stroke:#d68910,stroke-width:2px,color:#000
+    style C fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#000
+    style E fill:#95a5a6,stroke:#7f8c8d,stroke-width:2px,color:#000
+    style F fill:#95a5a6,stroke:#7f8c8d,stroke-width:2px,color:#000
 ```
 
 ## Module Coupling
@@ -141,23 +159,27 @@ graph TD
 ```mermaid
 graph TB
     subgraph "Tight Coupling Example"
-        UM[Users Module]
-        EM[Events Module]
-        SM[Sessions Module]
-        SpM[Speakers Module]
+        UM["<b>Users Module</b>"]
+        EM["<b>Events Module</b>"]
+        SM["<b>Sessions Module</b>"]
+        SpM["<b>Speakers Module</b>"]
         
         UM -->|Direct Import| EM
         EM -->|Direct Import| SM
         SM -->|Direct Import| SpM
         SpM -->|Direct Import| UM
         
-        UM -.->|Shared Database| DB[(Single DB)]
+        UM -.->|Shared Database| DB[("<b>Single DB</b>")]
         EM -.->|Shared Database| DB
         SM -.->|Shared Database| DB
         SpM -.->|Shared Database| DB
     end
     
-    style DB fill:#99ccff
+    style DB fill:#3498db,stroke:#2980b9,stroke-width:4px,color:#fff
+    style UM fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#000
+    style EM fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+    style SM fill:#f39c12,stroke:#d68910,stroke-width:2px,color:#000
+    style SpM fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
 ```
 
 **Impact of Coupling:**
@@ -202,17 +224,23 @@ sequenceDiagram
 ```mermaid
 graph TB
     subgraph "CPU & Memory"
-        R[All Resources Shared]
-        R --> M1[Auth Module]
-        R --> M2[Users Module]
-        R --> M3[Events Module]
-        R --> M4[Sessions Module]
-        R --> M5[Speakers Module]
+        R["<b>All Resources Shared</b>"]
+        R --> M1["<b>Auth Module</b>"]
+        R --> M2["<b>Users Module</b>"]
+        R --> M3["<b>Events Module</b>"]
+        R --> M4["<b>Sessions Module</b>"]
+        R --> M5["<b>Speakers Module</b>"]
     end
     
-    Note1[Cannot allocate more<br/>resources to high-traffic<br/>modules independently]
+    Note1["<b>Cannot allocate more<br/>resources to high-traffic<br/>modules independently</b>"]
     
-    style Note1 fill:#ffffcc
+    style Note1 fill:#e67e22,stroke:#d35400,stroke-width:3px,color:#fff
+    style R fill:#e74c3c,stroke:#c0392b,stroke-width:3px,color:#fff
+    style M1 fill:#9b59b6,stroke:#8e44ad,stroke-width:2px,color:#fff
+    style M2 fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:#000
+    style M3 fill:#e67e22,stroke:#d35400,stroke-width:2px,color:#fff
+    style M4 fill:#f39c12,stroke:#d68910,stroke-width:2px,color:#000
+    style M5 fill:#1abc9c,stroke:#16a085,stroke-width:2px,color:#fff
 ```
 
 **Problem**: If Events module needs more CPU, entire application must be scaled up.
